@@ -75,7 +75,7 @@ class dog:
     def setPoints(self, value):
         self.totalPoints += value
     
-dogList = linkedList(dog(0))
+dogList = linkedList()
 for x in range(tournamentSize - 1):
     dogList.append(dog(x))
 
