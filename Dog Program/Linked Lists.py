@@ -1,6 +1,9 @@
 import random
+dogListInitiated = False
 
 tournamentSize = int(input("How many dogs are entering the contest: "))
+while tournamentSize < 1:
+    tournamentSize = int(input("How many dogs are entering the contest: "))
 
 class node:
     def __init__(self, data):
@@ -16,6 +19,7 @@ class linkedList:
         while current.next is not None:
             current = current.next
         current.next = node(data)
+        print("Appended")
 
     def findNode(self, nodePlacement):
         current = self.head
@@ -25,6 +29,7 @@ class linkedList:
     
     def printList(self):
         current = self.head
+        print("|Printing List|")
         while current:
             print(
                 "Node: ", current,
@@ -33,13 +38,30 @@ class linkedList:
                 "\nPoints: ", current.data.totalPoints,
                 "\nNext: ", current.next
             )
+            if current.next == None:
+                return
             current = current.next
 
     def insertAtPoint(self, location, data):
         current = node(data)
         current.next = self.findNode(location)
         self.findNode(location-1).next = current
-        print(data.name, " ", current.next.data.name, " ", self.findNode(location-1).next.data.name)
+
+class dogList(linkedList):
+    global tournamentSize
+    def __init__(self, data):
+        super().__init__(data)
+
+    def insertAtPoint(self, location, data):
+        current = node(data)
+        current.next = self.findNode(location)
+        self.findNode(location-1).next = current
+    
+    def findLastID(self):
+        current = self.head
+        while current.next is not None:
+            current = current.next
+        return current.data.contestantID
 
 class dog:
     def __init__(self, loop):
@@ -48,7 +70,11 @@ class dog:
         self.weight = input("How heavy is the dog: ")
         self.breed = input("What breed is the dog: ")
         self.ownersName = input("What is the Owners Name: ")
-        self.contestantID = loop
+        print(dogList)
+        if dogListInitiated != True:
+            self.contestantID = 0
+        else:
+            self.contestantID = dogList.findLastID() + 1
         self.totalPoints = 0
 
     def getName(self):
@@ -75,25 +101,24 @@ class dog:
     def setPoints(self, value):
         self.totalPoints += value
     
-dogList = linkedList(dog(0))
+dogList = dogList(dog(0))
+dogListInitiated = True              #Boolean to check if dogList has been made to simplify extending of the list
 for x in range(tournamentSize - 1):
     dogList.append(dog(x))
 
-dogList.insertAtPoint(1, dog(2))
-tournamentSize += 1
-
-# def round(tournamentSize, measurement):
-#     if measurement == 0:
-#         winner = random.randint(0, tournamentSize-1)
-#         (dogList.findNode(winner)).data.setPoints(5)
-#     if measurement == 1:
-#         rankedList()
+print("Tournament Size: " + str(tournamentSize))
+dogList.append(dog(1))
+print("Tournament Size: " + str(tournamentSize))
 
 class round:
-    def __init__(self):
-        pass
+    def __init__(self, roundID):
+        self.roundID = roundID
 
-round(tournamentSize, None)
+    def getRoundStats(self):
+        print("Round Stats: " + str(self.roundID))
+
+firstRound = round(1)
+firstRound.getRoundStats()
 
 for x in range(tournamentSize):
     print((dogList.findNode(x)).data.getName(), ": ", (dogList.findNode(x)).data.getPoints())
