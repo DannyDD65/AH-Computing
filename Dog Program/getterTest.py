@@ -1,3 +1,5 @@
+import random
+
 dogListInitiated = False #Boolean to check if dogList has been made to simplify extending of the list
 
 def intChecker(inputMessage, toBeChecked):
@@ -16,9 +18,6 @@ class node:
     def __init__(self, data):
         self.data = data
         self.next = None
-
-    def getData(self):
-        return self.data
 
 class linkedList:
     def __init__(self, data, length):
@@ -89,7 +88,7 @@ class dogList(linkedList):
             if current.next == None:
                 print("|ERROR| DogID does not exist")
                 return
-        return current.data
+        return current.data.contestantID
 
     def printList(self):
         current = self.head
@@ -149,17 +148,6 @@ class dog:
     def setPoints(self, value):
         self.totalPoints += value
     
-class rounds:
-    def __init__(self, roundID, activity):
-        self.roundID = roundID
-        self.scores = linkedList(input("What was " + dogList.findNode(0).data.getName() + "'s score for " + activity + ": "), 1)
-        for x in range(dogList.getLength()-1):
-            self.scores.append(input("What was " + dogList.findNode(x+1).data.getName() + "'s score for " + activity + ": "))
-
-    def printScores(self):
-        for x in range(self.scores.length):
-            print(self.scores.findNode(x).getData())
-
 tournamentSize = intChecker("How many dogs are entering the contest: ", input("How many dogs are entering the contest: "))
 
 dogList = dogList(dog(), 1)
@@ -167,13 +155,24 @@ dogListInitiated = True              #dogList has been initialised
 for x in range(tournamentSize - 1):
     dogList.append(dog())
 
-dogList.append(dog())
-dogList.insertAtPoint(1, dog())
+class rounds:
+    def __init__(self, roundID):
+        self.roundID = roundID
+        self.scores = linkedList(input("What was " + dogList.findNode(0).data.getName() + "'s score: "), 1)
+        for x in range(tournamentSize-1):
+            self.scores.append(input("What was " + dogList.findNode(x+1).data.getName() + "'s score: "))
+
+    def printScores(self):
+        self.scores.printList()
+
+    # def getRoundStats(self):
+    #     print("Round Stats",
+    #           "\nRound ID: ", self.roundID,)
 
 for x in range(dogList.getLength()):
     print((dogList.findNode(x)).data.getName(), ": ", (dogList.findNode(x)).data.getPoints())
 
-roundList = linkedList(rounds(0, "running"), 1)
-roundList.append(rounds(1, "jumping"))
-roundList.append(rounds(2, "galoping"))
-roundList.append(rounds(3, "singing"))
+roundList = linkedList(rounds(0), 1)
+roundList.findNode(0).data.printScores()
+
+dogList.printList()
