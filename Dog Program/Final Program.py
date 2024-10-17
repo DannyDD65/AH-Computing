@@ -38,7 +38,7 @@ class linkedList:
 
     def findNode(self, nodePlacement):
         while nodePlacement > (self.length - 1):
-            nodePlacement = intChecker(str("Node doesnt exist, pick a node between 0 and " + self.length + ": "))
+            nodePlacement = intChecker(str("Node doesnt exist, pick a node between 1 and " + str(self.length) + ": "))
         current = self.head
         for x in range(nodePlacement):
             current = current.next
@@ -58,9 +58,14 @@ class linkedList:
             current = current.next
 
     def insertAtPoint(self, location, data):
-        current = node(data)
-        current.next = self.findNode(location)
-        self.findNode(location-1).next = current
+        if location == 0:
+            temp = self.head
+            self.head = node(data)
+            self.head.next = temp
+        else:
+            current = node(data)
+            current.next = self.findNode(location)
+            self.findNode(location-1).next = current
         self.length += 1
 
 class dogList(linkedList):
@@ -197,10 +202,10 @@ while dogListFinished == False:
         dogListFinished = True
     else: 
         print("What would you like to change?")
-        modification = input("Edit submissions - 1 | Add dog to list - 2 | Add dog in a certain location - 3: ")
+        modification = intChecker("Edit submissions - 1 | Add dog to list - 2 | Add dog in a certain location - 3 | Submit data - 4: ")
         while int(modification) < 1 or int(modification) > 4:
             print("|ERROR| Invalid Input")
-            modification = input("Edit submissions - 1 | Add dog to list - 2 | Add dog in a certain location - 3 | Submit data - 4: ")
+            modification = intChecker("Edit submissions - 1 | Add dog to list - 2 | Add dog in a certain location - 3 | Submit data - 4: ")
         if modification == 1:
             modifiedDog = intChecker("What is the ID of the dog you would like to change: ")
             while modifiedDog > dogList.getLength():
@@ -220,12 +225,14 @@ while dogListFinished == False:
                 dogList.searchList(modifiedDog).setBreed(input("What is the dog's breed: "))
             if modifiedValue == 5:
                 dogList.searchList(modifiedDog).setOwnersName(input("What is the owner's name: "))
-
-        if modification == 2:
+        elif modification == 2:
             dogList.append(dog())
-        if modification == 3:
-            dogList.insertAtPoint((input("What place would you like to place the dog: ") - 1), dog())
-        if modification == 4:
+        elif modification == 3:
+            placement = intChecker("What place would you like to place the dog: ")
+            while placement > dogList.getLength():
+               placement = intChecker("What place would you like to place the dog: ")
+            dogList.insertAtPoint((placement - 1), dog())
+        elif modification == 4:
             dogListFinished = True
 
 # roundList = linkedList(rounds(1, "running"))
@@ -233,5 +240,7 @@ while dogListFinished == False:
 # roundList.append(rounds(3, "galoping"))
 # roundList.append(rounds(4, "singing"))
 
-for x in range(dogList.getLength()):
-    print((dogList.findNode(x)).data.getName(), ": ", (dogList.findNode(x)).data.getPoints())
+dogList.printList()
+
+# for x in range(dogList.getLength()):
+#     print((dogList.findNode(x)).data.getName(), ": ", (dogList.findNode(x)).data.getPoints())
