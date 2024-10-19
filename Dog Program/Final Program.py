@@ -235,12 +235,14 @@ while dogListFinished == False:
         elif modification == 4:
             dogListFinished = True
 
-# roundList = linkedList(rounds(1, "running"))
-# roundList.append(rounds(2, "jumping"))
-# roundList.append(rounds(3, "galoping"))
-# roundList.append(rounds(4, "singing"))
+roundList = linkedList(rounds(1, "running"))
+roundList.append(rounds(2, "jumping"))
+roundList.append(rounds(3, "galoping"))
+roundList.append(rounds(4, "singing"))
 
-dogList.printList()
+# dogList.printList()
 
-# for x in range(dogList.getLength()):
-#     print((dogList.findNode(x)).data.getName(), ": ", (dogList.findNode(x)).data.getPoints())
+
+
+for x in range(dogList.getLength()):
+    print((dogList.findNode(x)).data.getName(), ": ", (dogList.findNode(x)).data.getPoints())
